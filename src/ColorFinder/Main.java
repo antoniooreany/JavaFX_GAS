@@ -52,7 +52,7 @@ public class Main extends Application {
                         double v = new_val.doubleValue() / 255;
                         values[finalI] = v;
                         r.setFill(new Color(values[0], values[1], values[2], opacity));
-//                                                           System.out.println("!!!changed: " + COLORS[finalI] + "    " + old_val + " ---> " + new_val);
+                        System.out.println("!!!changed: " + COLORS[finalI] + "    " + old_val + " ---> " + new_val);
                     }
             );
             pane.add(lblColors[i], 0, i);
