@@ -25,15 +25,14 @@ public class Main extends Application {
     private static double[] values;
     private static Rectangle rectangle;
     private static Color color;
+    private static Slider[] sliders = new Slider[COLORS_NUMBER];
+    private static Label[] lblValues255 = new Label[COLORS_NUMBER];
+    private static Label[] lblColors = new Label[COLORS_NUMBER];
 
     @Override
     public void start(Stage stage) {
 
-        Label[] lblColorNames = new Label[COLORS_NUMBER];
-        Label[] lblValues = new Label[COLORS_NUMBER];
-        Slider[] sliders = new Slider[COLORS_NUMBER];
-
-        GridPane gridPane = getGridPane(lblColorNames, lblValues, sliders);
+        GridPane gridPane = getGridPane();
         FlowPane flowPane = getFlowPane();
 
         BorderPane border = new BorderPane();
@@ -46,7 +45,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    private GridPane getGridPane(Label[] lblColors, Label[] lblValues255, Slider[] sliders) {
+    private GridPane getGridPane() {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
