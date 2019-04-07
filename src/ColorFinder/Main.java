@@ -20,20 +20,18 @@ public class Main extends Application {
     private static final double MAX_VALUE = 255;
     private static final int COLOR_NUMBER = 3;
     private static final String[] COLORS = new String[]{"Red:", "Green:", "Blue:"};
-    private static double[] values = new double[]{0.0, 0.0, 0, 0};
+    private static double[] values;
+
     private double opacity = 1;
     private Rectangle rectangle;
     private Color color;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private Label[] lblValues;
 
     @Override
     public void start(Stage stage) {
 
         Label[] lblColors = new Label[COLOR_NUMBER];
-        Label[] lblValues = new Label[COLOR_NUMBER];
+        this.lblValues = new Label[COLOR_NUMBER];
         Slider[] sliders = new Slider[COLOR_NUMBER];
 
         GridPane gridPane = getGridPane(lblColors, lblValues, sliders);
@@ -55,25 +53,33 @@ public class Main extends Application {
         gridPane.setVgap(10);
         gridPane.setAlignment(Pos.CENTER);
 
+        values = new double[]{0.0, 0.0, 0, 0};
+
         for (int i = 0; i < COLOR_NUMBER; i++) {
-            lblColors[i] = new Label(COLORS[i]);
             sliders[i] = new Slider(MIN_VALUE, MAX_VALUE, 0);
+            lblValues[i] = new Label(Double.toString(values[i]));
+            lblColors[i] = new Label(COLORS[i]);
             int finalI = i;
+
+            lblValues[finalI] = new Label(Double.toString(values[finalI]));
+            gridPane.add(this.lblValues[i], 1, i);
+            gridPane.add(lblColors[i], 0, i);
+            gridPane.add(sliders[i], 2, i);
+
             sliders[i].valueProperty().addListener((ov, old_val, new_val) -> {
                         double v = new_val.doubleValue() / 255;
                         values[finalI] = v;
                         color = new Color(values[0], values[1], values[2], opacity);
                         rectangle.setFill(color);
-                        System.out.println("" + values[0]+ "    " + values[1] + "    " +  values[2] + "    " +  opacity);
+                        this.lblValues[finalI] = new Label(Double.toString(values[finalI]));
+//                        System.out.println(lblValues[finalI]);
+
+                        gridPane.add(this.lblValues[finalI], 1, finalI);
+
+                        System.out.println("" + values[0] + "    " + values[1] + "    " + values[2] + "    " + opacity);
 //                        System.out.println("!!!changed: " + COLORS[finalI] + "    " + old_val + " ---> " + new_val);
                     }
             );
-
-            lblValues[finalI] = new Label(Double.toString(values[finalI]));
-            System.out.println(lblValues[finalI]);
-            gridPane.add(lblColors[i], 0, i);
-            gridPane.add(lblValues[i], 1, i);
-            gridPane.add(sliders[i], 2, i);
         }
         return gridPane;
     }
@@ -92,5 +98,9 @@ public class Main extends Application {
         flowPane.setStyle("-fx-background-color: DAE6F3;");
         flowPane.getChildren().add(rectangle);
         return flowPane;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
