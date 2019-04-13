@@ -1,7 +1,6 @@
 package ColorFinder;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -32,20 +31,20 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        GridPane gridPane = getGridPane();
-        FlowPane flowPane = getFlowPane();
+        GridPane gridPane = getGridPane(100);
+        FlowPane flowPane = getFlowPane(200, 200);
 
-        BorderPane border = new BorderPane();
-        border.setLeft(gridPane);
-        border.setRight(flowPane);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(gridPane);
+        borderPane.setRight(flowPane);
 
-        Scene scene = new Scene(border);
+        Scene scene = new Scene(borderPane);
         stage.setScene(scene);
         stage.setTitle(title);
         stage.show();
     }
 
-    private GridPane getGridPane() {
+    private GridPane getGridPane(int valuesBlockMinWidth) {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
@@ -54,23 +53,24 @@ public class Main extends Application {
         values = new double[COLORS_NUMBER];
 
         for (int i = 0; i < COLORS_NUMBER; i++) {
-            sliders[i] = new Slider(MIN_VALUE, MAX_VALUE, 0);
-            lblValues255[i] = new Label(Double.toString(values[i]));
-            lblColors[i] = new Label(COLORS[i]);
             int finalI = i;
-
+            sliders[finalI] = new Slider(MIN_VALUE, MAX_VALUE, 0);
             lblValues255[finalI] = new Label(Double.toString(values[finalI]));
-            gridPane.add(lblValues255[i], 1, i);
-            gridPane.add(lblColors[i], 0, i);
-            gridPane.add(sliders[i], 2, i);
+            lblColors[finalI] = new Label(COLORS[finalI]);
+            lblValues255[finalI] = new Label(Double.toString(values[finalI]));
+            lblValues255[finalI].setMinWidth(valuesBlockMinWidth); //TODO Do we need this line?
+            gridPane.add(lblValues255[finalI], 1, finalI);
+            gridPane.add(lblColors[finalI], 0, finalI);
+            gridPane.add(sliders[finalI], 2, finalI);
 
-            sliders[i].valueProperty().addListener((ov, old_val, new_val) -> {
+            sliders[finalI].valueProperty().addListener((ov, old_val, new_val) -> {
                         double v = new_val.doubleValue() / 255;
                         values[finalI] = v;
                         color = new Color(values[0], values[1], values[2], opacity);
                         rectangle.setFill(color);
                         gridPane.getChildren().remove(lblValues255[finalI]);
                         lblValues255[finalI] = new Label(Double.toString(Math.round(values[finalI] * 255)));
+                        lblValues255[finalI].setMinWidth(valuesBlockMinWidth); //TODO Do we need this line?
                         gridPane.add(lblValues255[finalI], 1, finalI);
                     }
             );
@@ -78,18 +78,20 @@ public class Main extends Application {
         return gridPane;
     }
 
-    private FlowPane getFlowPane() {
-        rectangle = new Rectangle(50, 25, 100, 140);
+    private FlowPane getFlowPane(int rectangleWidth, int rectangleHeight) {
+        int x = 0;
+        int y = 0;
+        rectangle = new Rectangle(x, y, rectangleWidth, rectangleHeight);
         rectangle.setStroke(Color.BLACK);
         rectangle.setFill(new Color(values[0], values[1], values[2], opacity));
         rectangle.setStrokeWidth(3);
 
         FlowPane flowPane = new FlowPane();
-        flowPane.setPadding(new Insets(5, 0, 5, 0));
+//        flowPane.setPadding(new Insets(0, 0, 0, 0));
         flowPane.setVgap(4);
         flowPane.setHgap(4);
         flowPane.setPrefWrapLength(170); // preferred width allows for two columns
-        flowPane.setStyle("-fx-background-color: DAE6F3;");
+        flowPane.setStyle("-fx-background-color: #b6ffc1;");
         flowPane.getChildren().add(rectangle);
         return flowPane;
     }
