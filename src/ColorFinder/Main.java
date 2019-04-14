@@ -17,8 +17,8 @@ public class Main extends Application {
     private static final String title = "Color Finder";
     private static final double MIN_VALUE = 0;
     private static final double MAX_VALUE = 255;
-    private static final int COLORS_NUMBER = 3;
     private static final String[] COLORS = new String[]{"Red:", "Green:", "Blue:"};
+    private static final int COLORS_NUMBER = COLORS.length;
     private static final double opacity = 1;
 
     private static double[] values;
@@ -48,6 +48,8 @@ public class Main extends Application {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
+//        gridPane.setGridLinesVisible(true); //TODO Only for debugging. Comment when ready!
+//        gridPane.
         gridPane.setAlignment(Pos.CENTER);
 
         values = new double[COLORS_NUMBER];
